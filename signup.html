@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do App</title>
+
+  <!-- ---------------- estilos compartilhados entre login e signup ---------------- -->
+  <link rel="stylesheet" href="./styles/login.css">
+
+  <!-- ---------------------- lógica aplicada no registro -------------------- -->
+  <script src="./scripts/utils.js" defer></script>
+  <script src="./scripts/signup.js" defer></script>
+
+</head>
+
+<body>
+
+  <div class="left">
+    <img src="./assets/pessoa-signup.png" alt="">
+  </div>
+  <div class="right">
+    <form  id="form_register">
+      <div class="form-header">
+        <p>To-Do App</p>
+      </div>
+
+      <label>
+        Nome:
+        <input id="firstName" type="text" required>
+      </label>
+      <label>
+        Sobrenome:
+        <input id="lastName" type="text" required>
+      </label>
+      <label>
+        Email:
+        <input id="email" type="email" required>
+      </label>
+      <label>
+        Senha:
+        <input id="password" type="password" title ="A senha deve ter entre 8 e 25 caracteres, contendo ao menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial." required>
+      </label>
+      <label>
+        Repetir senha:
+        <input id="confPassword" type="password" title="A confirmação de senha deve ser igual à senha." required>
+      </label>
+
+      <button id="btnCadastrar">Criar conta</button>
+
+    </form>
+    <div class="ingressar">
+      <a href="index.html">Já possui conta? Acesse aqui</a>
+    </div>
+  </div>
+
+</body>
+
+</html>
