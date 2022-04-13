@@ -5,16 +5,7 @@ const sobrenome = document.getElementById("lastName");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const confpassword = document.getElementById("confPassword");
-const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%¨&*-+_]).{8,25}$/;
-const passwordTest = regEx.test(password.value);
-
-
-const userRegister = {
-  firstName: nome.value,
-  lastName: sobrenome.value,
-  email: email.value,
-  password: password.value
-};
+/* const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%¨&*-+_]).{8,25}$/g; */
 
 
 const route = {
@@ -22,71 +13,148 @@ const route = {
   login: "/users/login",
   tasks: "/tasks"
 };
-
 const limparErro = (campo) => {
   if (campo.classList.contains("error")) {
     campo.classList.remove("error");
     campo.nextSibling.remove();
+    error--;
   }
 };
 
-btnCadastrar.addEventListener("click", function (event) {
-  event.preventDefault();
+btnCadastrar.disabled = true;
+let error = 0;
+
+nome.addEventListener("blur", () => {
+  if (nome.value.length < 2) {
+    if (nome.classList.contains("error")) {
+      console.log("já contem a classe error");
+    } else {
+      nome.classList.add("error");
+      const erro = document.createElement("small");
+      erro.innerText = "Informe o nome completo";
+      nome.after(erro);
+      error++;
+    }
+  } else {
+    limparErro(nome);
+  }
+});
+
+sobrenome.addEventListener("blur", () => {
+  if (sobrenome.value.length < 2) {
+    if (sobrenome.classList.contains("error")) {
+      console.log("já contem a classe error");
+    } else {
+      sobrenome.classList.add("error");
+      const erro = document.createElement("small");
+      erro.innerText = "Sobrenome não deve ser abreviado";
+      sobrenome.after(erro);
+      error++;
+    }
+  } else {
+    limparErro(sobrenome);
+  }
+});
+
+email.addEventListener("blur", () => {
+  if (email.value === "" || email.value.length < 5) {
+    if (email.classList.contains("error")) {
+      console.log("já contem a classe error");
+    } else {
+      email.classList.add("error");
+      const erro = document.createElement("small");
+      erro.innerText = "Insira um email válido";
+      email.after(erro);
+      error++;
+    }
+  } else {
+    limparErro(email);
+  }
+});
+password.addEventListener("blur", () => {
+  /*
+  const passwordTest = regEx.test(password.value);
+  console.log(passwordTest);
+  console.log(password.value); */
+  if (password.value.length < 8) {
+    if (password.classList.contains("error")) {
+      console.log("já contem a classe error");
+      console.log(error);
+    } else {
+      password.classList.add("error");
+      const erro = document.createElement("small");
+      erro.innerText = "Senha inválida";
+      password.after(erro);
+      error++;
+    }
+  } else {
+    limparErro(password);
+  }
+});
+
+confpassword.addEventListener("blur", () => {
+  if (confpassword.value === "" || confpassword.value !== password.value) {
+    if (confpassword.classList.contains("error")) {
+      console.log("já contem a classe error");
+    } else {
+      confpassword.classList.add("error");
+      const erro = document.createElement("small");
+      erro.innerText = "As senhas não conferem";
+      confpassword.after(erro);
+      error++;
+    }
+  } else {
+    limparErro(confpassword);
+  }
+});
+
+if (error === 0) {
+  btnCadastrar.disabled = false;
+  /*
   limparErro(nome);
   limparErro(sobrenome);
   limparErro(email);
   limparErro(password);
-  limparErro(confpassword);
-
-  if (nome.value.lenght < 2 || nome.value === "" ) {
-    nome.classList.add("error");
-    const erro = document.createElement("small");
-    erro.innerText = "Informe o nome completo";
-    nome.after(erro);
-  } else if (sobrenome.value === "" || sobrenome.value.lenght < 2) {
-    sobrenome.classList.add("error");
-    const erro = document.createElement("small");
-    erro.innerText = "Apelido precisa ter ao menos 8 caracteres";
-    sobrenome.after(erro);
-  } else if (email.value === "" || email.value < 5) {
-    email.classList.add("error");
-    const erro = document.createElement("small");
-    erro.innerText = "Insira um email válido";
-    email.after(erro);
-  } else if (passwordTest == false ) {
-    password.classList.add("error");
-    const erro = document.createElement("small");
-    erro.innerText = "Senha inválida";
-    password.after(erro);
-  } else if (confpassword.value !== password.value) {
-    confpassword.classList.add("error");
-    const erro = document.createElement("small");
-    erro.innerText = "As senhas não conferem";
-    confpassword.after(erro);
-  }  else {
-    console.log("enviado");
-    const url = window.linkAPI + route.users;
-
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(userRegister)
-  })
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (usuario) {
-    localStorage.setItem("jwt", usuario.jwt)
-    window.location.href = "tasks.html"
-  });
-function limparCampo() {
-  nome.value = "";
-  sobrenome.value = "";
-  email.value = "";
-  password.value = "";
-  confpassword.value = "";
+  limparErro(confpassword); */
 }
-    }
+
+btnCadastrar.addEventListener("click", function (event) {
+  event.preventDefault();
+  console.log("enviado");
+
+  const userRegister = {
+    firstName: nome.value,
+    lastName: sobrenome.value,
+    email: email.value,
+    password: password.value
+  };
+
+  const url = window.linkAPI + route.users;
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(userRegister)
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (usuario) {
+      if (usuario.jwt) {
+        localStorage.setItem("jwt", usuario.jwt)
+        console.log(localStorage.getItem("jwt"));
+        window.location.href = "tasks.html";
+      } else {
+        alert(" erro ")
+      }
+    });
+
+  function limparCampo() {
+    nome.value = "";
+    sobrenome.value = "";
+    email.value = "";
+    password.value = "";
+    confpassword.value = "";
+  }
 });
