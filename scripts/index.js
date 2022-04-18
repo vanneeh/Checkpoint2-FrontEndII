@@ -10,6 +10,21 @@ const route = {
   login: "/users/login",
   tasks: "/tasks"
 };
+
+// Obtem o spinner que está na tela
+const spinner = document.querySelector(".spinner-container");
+
+// Função que exibe o spinner
+const showSpinner = () => {
+  spinner.classList.add("show");
+};
+
+// Função que esconde o spinner
+const hideSpinner = () => {
+  spinner.classList.remove("show");
+};
+
+
 const limparErro = (campo) => {
   if (campo.classList.contains("error")) {
     campo.classList.remove("error");
@@ -17,6 +32,7 @@ const limparErro = (campo) => {
     error--;
   }
 };
+
 btnEnviar.disabled = true;
 let error = 0;
 
@@ -70,6 +86,9 @@ btnEnviar.addEventListener("click", function (event) {
   };
   const url = window.linkAPI + route.login;
   event.preventDefault();
+    // Exibe o spinner
+    showSpinner();
+
       fetch(url, {
         method: "POST",
         headers: {
@@ -85,9 +104,12 @@ btnEnviar.addEventListener("click", function (event) {
           localStorage.setItem("jwt", usuario.jwt)
           window.location.href = "tasks.html"
           } else {
+            // Esconde o spinner
+            hideSpinner();
             alert(" erro ")
           }
-        });
+        })
+        .catch((erro) => alert(erro));
   function limpaCamposFormulario() {
     email.value = "";
     password.value = "";

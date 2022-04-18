@@ -8,11 +8,26 @@ const confpassword = document.getElementById("confPassword");
 /* const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%¨&*-+_]).{8,25}$/g; */
 
 
+// Obtem o spinner que está na tela
+const spinner = document.querySelector(".spinner-container");
+
+// Função que exibe o spinner
+const showSpinner = () => {
+  spinner.classList.add("show");
+};
+
+// Função que esconde o spinner
+const hideSpinner = () => {
+  spinner.classList.remove("show");
+};
+
+
 const route = {
   users: "/users",
   login: "/users/login",
   tasks: "/tasks"
 };
+
 const limparErro = (campo) => {
   if (campo.classList.contains("error")) {
     campo.classList.remove("error");
@@ -120,6 +135,8 @@ if (error === 0) {
 
 btnCadastrar.addEventListener("click", function (event) {
   event.preventDefault();
+  // Exibe o spinner
+  showSpinner();
   console.log("enviado");
 
   const userRegister = {
@@ -146,9 +163,12 @@ btnCadastrar.addEventListener("click", function (event) {
         console.log(localStorage.getItem("jwt"));
         window.location.href = "tasks.html";
       } else {
+        // Esconde o spinner
+        hideSpinner();
         alert(" erro ")
       }
-    });
+    })
+    .catch((erro) => alert(erro));
 
   function limparCampo() {
     nome.value = "";
